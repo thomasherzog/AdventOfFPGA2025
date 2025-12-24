@@ -9,7 +9,6 @@ module day01p1_top (
     output logic ready_o
 );
 
-
 typedef enum logic [1:0] { 
     Start,
     Idle, 
@@ -25,7 +24,6 @@ logic dir_q, dir_d;
 logic [15:0] amount_q, amount_d;
 
 logic [15:0] zero_cntr_q, zero_cntr_d;
-
 
 always_comb begin
     state_d = state_q;
@@ -84,7 +82,6 @@ always_comb begin
     endcase
 end
 
-
 always_ff @( posedge clk_i, negedge rst_ni ) begin
     if(rst_ni == 1'b0) begin
         state_q <= Start;
@@ -101,9 +98,7 @@ always_ff @( posedge clk_i, negedge rst_ni ) begin
     end
 end
 
-
 assign result_o = zero_cntr_q;
 assign ready_o = (state_q == Idle);
-    
 
 endmodule
