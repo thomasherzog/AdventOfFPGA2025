@@ -74,7 +74,7 @@ always_comb begin
                 dial_d = dial_q + 16'd100 - amount_q;
                 zero_cntr_d = zero_cntr_q + 16'b1;
                 state_d = Evaluate;
-            end else if ( dir_q == 0'b1 ) begin 
+            end else if ( dir_q == 1'b1 ) begin 
                 dial_d = dial_q + amount_q - 16'd100;
                 zero_cntr_d = zero_cntr_q + 16'b1;
                 state_d = Evaluate;

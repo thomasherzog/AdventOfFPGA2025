@@ -40,7 +40,7 @@ always_comb begin
             state_d = Idle;
             joltage_d = 64'b0;
             digit_d = 4'b0;
-            foreach (twelve_digits_d[i]) begin
+            for (int i = 0; i < 12; i++) begin
                 twelve_digits_d[i] = 4'b0;
             end
             index_d = 4'b0;
@@ -78,7 +78,7 @@ always_comb begin
         Sum: begin
             if(index_q == 4'd12) begin
                 digit_d = 4'b0;
-                foreach (twelve_digits_d[i]) begin
+                for (int i = 0; i < 12; i++) begin
                     twelve_digits_d[i] = 4'b0;
                 end
                 state_d = Idle;
@@ -98,7 +98,7 @@ always_ff @( posedge clk_i, negedge rst_ni ) begin
         state_q <= Start;
         joltage_q <= 64'b0;
         digit_q <= 4'b0;
-        foreach (twelve_digits_q[i]) begin
+        for (int i = 0; i < 12; i++) begin
             twelve_digits_q[i] <= 4'b0;
         end
         index_q <= 4'b0;
