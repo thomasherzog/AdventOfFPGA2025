@@ -1,4 +1,4 @@
-module day01p1_top ( 
+module day01p2_top ( 
     input logic clk_i,
     input logic rst_ni,
     
@@ -56,18 +56,27 @@ always_comb begin
         Process: begin 
             if ( amount_q > 16'd100 ) begin
                 amount_d = amount_q - 16'd100;
+                zero_cntr_d = zero_cntr_q + 16'b1;
                 state_d = Process;
+            end else if ( dir_q == 1'b0 && dial_q == 16'b0 ) begin
+                dial_d = dial_q + 16'd100 - amount_q;
+                state_d = Evaluate;
             end else if( dir_q == 1'b0 && amount_q <= dial_q ) begin
                 dial_d = dial_q - amount_q;
                 state_d = Evaluate;
             end else if( dir_q == 1'b1 && (dial_q + amount_q < 17'd100) ) begin
                 dial_d = dial_q + amount_q;
                 state_d = Evaluate;
-            end else if (dir_q == 1'b0) begin
-                dial_d = dial_q + 16'd100 - amount_q;
+            end else if( dir_q == 1'b1 && (dial_q + amount_q == 17'd100) ) begin
+                dial_d = 16'b0;
                 state_d = Evaluate;
-            end else if (dir_q == 0'b1) begin 
+            end else if ( dir_q == 1'b0 ) begin
+                dial_d = dial_q + 16'd100 - amount_q;
+                zero_cntr_d = zero_cntr_q + 16'b1;
+                state_d = Evaluate;
+            end else if ( dir_q == 0'b1 ) begin 
                 dial_d = dial_q + amount_q - 16'd100;
+                zero_cntr_d = zero_cntr_q + 16'b1;
                 state_d = Evaluate;
             end
         end

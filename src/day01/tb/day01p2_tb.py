@@ -2,7 +2,7 @@ import cocotb
 from cocotb.triggers import Timer, RisingEdge
 from cocotb.clock import Clock
 
-from day01_stimuli_gen import load_stimuli, gen_expected_outputs_p1
+from day01_stimuli_gen import load_stimuli, gen_expected_outputs_p2
 
 
 async def test_stimuli(dut, stimuli, outputs):
@@ -23,16 +23,17 @@ async def test_stimuli(dut, stimuli, outputs):
 
 
 @cocotb.test()
-async def test_part1_stimuli_small(dut):
+async def test_part2_stimuli_small(dut):
     Clock(dut.clk_i, 1, unit='ns').start()
     stimuli = load_stimuli("stim_small.txt")
-    outputs = gen_expected_outputs_p1(stimuli)
+    outputs = gen_expected_outputs_p2(stimuli)
+    print(outputs)
     await test_stimuli(dut, stimuli, outputs)
 
 
 @cocotb.test()
-async def test_part1_stimuli_large(dut):
+async def test_part2_stimuli_large(dut):
     Clock(dut.clk_i, 1, unit='ns').start()
     stimuli = load_stimuli("stim_large.txt")
-    outputs = gen_expected_outputs_p1(stimuli)
+    outputs = gen_expected_outputs_p2(stimuli)
     await test_stimuli(dut, stimuli, outputs)

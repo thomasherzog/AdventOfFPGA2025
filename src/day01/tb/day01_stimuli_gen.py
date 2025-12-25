@@ -23,3 +23,19 @@ def gen_expected_outputs_p1(stimuli):
             zeros_accum += 1
         outputs.append(zeros_accum)
     return outputs
+
+
+def gen_expected_outputs_p2(stimuli):
+    outputs = []
+    dial = 50
+    zeros_accum = 0
+    for direction, amount in stimuli:
+        for _ in range(amount):
+            if direction == 'L':
+                dial = (dial - 1) % 100
+            elif direction == 'R':
+                dial = (dial + 1) % 100
+            if dial == 0:
+                zeros_accum += 1
+        outputs.append(zeros_accum)
+    return outputs
