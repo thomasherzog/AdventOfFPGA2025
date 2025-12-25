@@ -2,7 +2,7 @@ import cocotb
 from cocotb.triggers import Timer, RisingEdge
 from cocotb.clock import Clock
 
-from day01_stimuli_gen import load_stimuli, gen_expected_outputs_p2
+from day03_stimuli_gen import load_stimuli, gen_expected_outputs_p2
 
 
 async def test_stimuli(dut, stimuli, outputs):
@@ -11,19 +11,23 @@ async def test_stimuli(dut, stimuli, outputs):
     dut.rst_ni.value = 1
     await RisingEdge(dut.ready_o)
 
-    for i, (direction, amount) in enumerate(stimuli):
-        dut.direction_i.value = 0 if direction == 'L' else 1
-        dut.amount_i.value = amount
+    for i, digit_sequence in enumerate(stimuli):
+        for digit in digit_sequence:
+            dut.digit_i.value = int(digit)
+            dut.eol_i.value = 0
+            await RisingEdge(dut.ready_o)
 
+        dut.eol_i.value = 1
         await RisingEdge(dut.ready_o)
-        expected_zeros = outputs[i]
-        actual_zeros = dut.result_o.value.to_unsigned()
 
-        assert actual_zeros == expected_zeros, f"At step {i}, expected zeros_accum {expected_zeros}, got {actual_zeros}"
+        expected_joltage = outputs[i]
+        actual_joltage = dut.result_o.value.to_unsigned()
+
+        assert actual_joltage == expected_joltage, f"At step {i}, expected joltage {expected_joltage}, got {actual_joltage}"
 
 
 @cocotb.test()
-async def test_part2_stimuli_small(dut):
+async def test_part1_stimuli_small(dut):
     Clock(dut.clk_i, 1, unit='ns').start()
     stimuli = load_stimuli("stim_small.txt")
     outputs = gen_expected_outputs_p2(stimuli)
@@ -31,7 +35,7 @@ async def test_part2_stimuli_small(dut):
 
 
 @cocotb.test()
-async def test_part2_stimuli_large(dut):
+async def test_part1_stimuli_large(dut):
     Clock(dut.clk_i, 1, unit='ns').start()
     stimuli = load_stimuli("stim_large.txt")
     outputs = gen_expected_outputs_p2(stimuli)
